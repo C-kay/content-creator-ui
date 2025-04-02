@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Textarea } from "./ui/textarea"
 import { Send, RefreshCw } from "lucide-react"
 import axios from "axios"
 
@@ -10,6 +10,7 @@ import PlatformCard from "./PlatformCard"
 import ExpandedCardDialog from "./ExpandedCardDialog"
 import ScrollButtons from "./ScrollButtons"
 import PlatformSelector from "./PlatformSelector"
+
 
 // Available platform types
 const availablePlatforms = [
@@ -125,14 +126,15 @@ export default function ContentCreator() {
     <div className="container mx-auto p-4 max-w-7xl">
       <div className="mb-8">
         <div className="flex flex-col md:flex-row gap-4 mb-4">
-          <div className="flex-1">
-            <Input
+            <div className="flex-1">
+            <Textarea
               placeholder="Enter content draft"
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
-              className="w-full"
+              className="w-full p-2 border rounded-md"
+              rows={4}
             />
-          </div>
+            </div>
           <div className="flex gap-2">
             <PlatformSelector
               selectedPlatforms={selectedPlatforms}
