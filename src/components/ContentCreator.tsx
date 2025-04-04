@@ -64,7 +64,7 @@ export default function ContentCreator() {
     setIsGenerating(true)
 
     try {
-      const response = await axios.post("http://localhost:8000/execute_workflow", {
+      const response = await axios.post("https://content-generator-deterministic.onrender.com/execute_workflow", {
         topic_draft: draft,
         platforms: selectedPlatforms.map((platformId) => {
           const platform = availablePlatforms.find((p) => p.id === platformId)
@@ -94,7 +94,7 @@ export default function ContentCreator() {
     setIsGenerating(true)
 
     try {
-      const response = await axios.post("http://localhost:8000/execute_single_platform", {
+      const response = await axios.post("https://content-generator-deterministic.onrender.com/execute_single_platform", {
         topic_draft: draft,
         platforms: [platform.name],
       })
