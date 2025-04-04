@@ -9,6 +9,12 @@ This project is a React + TypeScript application built with Vite. It provides a 
 - Expand and view detailed content for each platform.
 - Smooth scrolling for platform cards.
 
+## Preview
+
+Below is a preview of the Content Creator UI:
+
+![Content Creator UI Preview](./assets/content-creator-ui-preview.png)
+
 ## Getting Started
 
 ### Prerequisites

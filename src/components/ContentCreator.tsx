@@ -16,25 +16,12 @@ import PlatformSelector from "./PlatformSelector"
 const availablePlatforms = [
   { id: 1, name: "LinkedIn" },
   { id: 2, name: "Instagram" },
-  { id: 3, name: "Twitter" },
-  { id: 4, name: "Facebook" },
-  { id: 5, name: "TikTok" },
+  // { id: 3, name: "Twitter" },
+  // { id: 4, name: "Facebook" },
+  // { id: 5, name: "TikTok" },
   { id: 6, name: "Blog Post" },
 ]
 
-interface Response {
-  content?: Array<{ id: number; name: string; content: string }>
-}
-
-// Sample data for the social media platforms
-const platformContent = {
-  LinkedIn: `### Professional Growth Post\n\n**Excited to share** that our team has developed a new content creation tool...`,
-  Instagram: `✨ **New tool alert!** ✨\n\nSay goodbye to rewriting the same content for different platforms...`,
-  Twitter: `Just launched our new content creation tool! 🚀\n\nOne draft, multiple optimized posts...`,
-  Facebook: `We're thrilled to announce the launch of our new content creation tool!\n\nNow you can write once...`,
-  TikTok: `New content creation tool just dropped! 📱\n\nWrite once, post everywhere!...`,
-  "Blog Post": `# Introducing Our New Content Creation Tool: Write Once, Share Everywhere\n\n*Posted on March 31, 2025...`,
-}
 
 export default function ContentCreator() {
   const [draft, setDraft] = useState("")
@@ -100,20 +87,36 @@ export default function ContentCreator() {
     }
   }
 
-  const regeneratePlatform = (id: number) => {
-    const platformIndex = generatedContent.findIndex((p) => p.id === id)
-    if (platformIndex === -1) return
+  const regeneratePlatform = async (id: number) => {
+    const platform = generatedContent.find((p) => p.id === id)
+    if (!platform) return
 
-    const updatedContent = [...generatedContent]
-    updatedContent[platformIndex] = {
-      ...updatedContent[platformIndex],
-      content: `${updatedContent[platformIndex].content}\n\n*Regenerated at ${new Date().toLocaleTimeString()}*`,
-    }
+    setIsGenerating(true)
 
-    setGeneratedContent(updatedContent)
+    try {
+      const response = await axios.post("http://localhost:8000/execute_single_platform", {
+        topic_draft: draft,
+        platforms: [platform.name],
+      })
 
-    if (expandedCard && expandedCard.id === id) {
-      setExpandedCard(updatedContent[platformIndex])
+      const updatedContent = [...generatedContent]
+      const platformIndex = updatedContent.findIndex((p) => p.id === id)
+      if (platformIndex !== -1) {
+        updatedContent[platformIndex] = {
+          id: response.data.id,
+          name: response.data.name,
+          content: response.data.content,
+        }
+        setGeneratedContent(updatedContent)
+
+        if (expandedCard && expandedCard.id === id) {
+          setExpandedCard(updatedContent[platformIndex])
+        }
+      }
+    } catch (error) {
+      console.error("Error regenerating platform content:", error)
+    } finally {
+      setIsGenerating(false)
     }
   }
 
