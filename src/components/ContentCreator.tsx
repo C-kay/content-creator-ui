@@ -29,6 +29,7 @@ export default function ContentCreator() {
   const [generatedContent, setGeneratedContent] = useState<Array<{ id: number; name: string; content: string }>>([])
   const [selectedPlatforms, setSelectedPlatforms] = useState<number[]>([])
   const [hasGenerated, setHasGenerated] = useState(false)
+  const [isDisableLikeButton, setIsDisableLikeButton] = useState(false)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [expandedCard, setExpandedCard] = useState<{ id: number; name: string; content: string } | null>(null)
 
@@ -71,7 +72,7 @@ export default function ContentCreator() {
           return platform ? platform.name : null
         }).filter(Boolean),
       })
-  
+
       const newContent = response.data.content.map((content: { id: number; name: string; content: string }) => ({
         id: content.id,
         name: content.name,
@@ -124,12 +125,35 @@ export default function ContentCreator() {
     setExpandedCard(platform)
   }
 
+  const handleLikeButtonClick = async (e: React.MouseEvent, platformId: number) => {
+    e.stopPropagation();
+    const likedContent = generatedContent.find((p) => p.id === platformId);
+    if (!likedContent) return;
+
+    try {
+      const response = await axios.post("https://content-generator-deterministic.onrender.com/save_liked_content", {
+        text: likedContent.content,
+        namespace: likedContent.name,
+        metadata: { platform: likedContent.name },
+      });
+      console.log("Response from save_liked_content:", response);
+      if (response.status === 200) {
+        console.log("Content liked successfully:", response.data);
+        setIsDisableLikeButton(true);
+      }else {
+        console.error("Failed to like content:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error liking platform:", error)
+    }
+  }
+
 
   return (
     <div className="container mx-auto p-4 max-w-7xl">
       <div className="mb-8">
         <div className="flex flex-col md:flex-row gap-4 mb-4">
-            <div className="flex-1">
+          <div className="flex-1">
             <Textarea
               placeholder="Enter content draft"
               value={draft}
@@ -137,7 +161,7 @@ export default function ContentCreator() {
               className="w-full p-2 border rounded-md"
               rows={4}
             />
-            </div>
+          </div>
           <div className="flex gap-2">
             <PlatformSelector
               selectedPlatforms={selectedPlatforms}
@@ -182,6 +206,8 @@ export default function ContentCreator() {
                 key={platform.id}
                 platform={platform}
                 onClick={() => handleCardClick(platform)}
+                handleLikeButtonClick={handleLikeButtonClick}
+                isDisableLikeButton={isDisableLikeButton}
                 regeneratePlatform={regeneratePlatform}
               />
             ))}
@@ -199,6 +225,8 @@ export default function ContentCreator() {
         expandedCard={expandedCard}
         setExpandedCard={setExpandedCard}
         regeneratePlatform={regeneratePlatform}
+        handleLikeButtonClick={handleLikeButtonClick}
+        isDisableLikeButton={isDisableLikeButton}
       />
     </div>
   )

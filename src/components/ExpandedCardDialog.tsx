@@ -8,10 +8,14 @@ export default function ExpandedCardDialog({
   expandedCard,
   setExpandedCard,
   regeneratePlatform,
+  handleLikeButtonClick,
+  isDisableLikeButton
 }: {
   expandedCard: { id: number; name: string; content: string } | null
   setExpandedCard: (value: null) => void
   regeneratePlatform: (id: number) => void
+  handleLikeButtonClick: (e: React.MouseEvent, platformId: number) => Promise<void>
+  isDisableLikeButton?: boolean
 }) {
   return (
     <Dialog open={expandedCard !== null} onOpenChange={(open) => !open && setExpandedCard(null)}>
@@ -20,10 +24,10 @@ export default function ExpandedCardDialog({
           <DialogTitle>{expandedCard?.name}</DialogTitle>
         </DialogHeader>
         <div className="py-4 overflow-y-auto max-h-[60vh]">
-            <div className="prose dark:prose-invert">
-              <ReactMarkdown>{expandedCard?.content || ""}</ReactMarkdown>
-            </div>
-            
+          <div className="prose dark:prose-invert">
+            <ReactMarkdown>{expandedCard?.content || ""}</ReactMarkdown>
+          </div>
+
           {/* <Textarea
             id="expanded-card-content"
             value={expandedCard?.content ?? ""} // Use empty string as fallback
@@ -46,6 +50,13 @@ export default function ExpandedCardDialog({
             </DropdownMenuContent>
           </DropdownMenu>
           <div className="flex gap-4">
+            <Button
+              variant="outline"
+              onClick={(e) => handleLikeButtonClick(e, expandedCard?.id || 0)}
+              disabled={isDisableLikeButton}
+            >
+              👍 Like
+            </Button>
             <Button variant="outline" onClick={() => expandedCard && regeneratePlatform(expandedCard.id)}>
               <RefreshCw className="mr-2 h-4 w-4" />
               Regenerate
