@@ -1,7 +1,18 @@
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { ChevronDown, RefreshCw, X } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, RefreshCw, X } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import ReactMarkdown from "react-markdown";
 
 export default function ExpandedCardDialog({
@@ -9,17 +20,26 @@ export default function ExpandedCardDialog({
   setExpandedCard,
   regeneratePlatform,
   handleLikeButtonClick,
-  isDisableLikeButton
+  isDisableLikeButton,
 }: {
-  expandedCard: { id: number; name: string; content: string } | null
-  setExpandedCard: (value: null) => void
-  regeneratePlatform: (id: number) => void
-  handleLikeButtonClick: (e: React.MouseEvent, platformId: number) => Promise<void>
-  isDisableLikeButton?: boolean
+  expandedCard: { id: number; name: string; content: string } | null;
+  setExpandedCard: (value: null) => void;
+  regeneratePlatform: (id: number) => void;
+  handleLikeButtonClick: (
+    e: React.MouseEvent,
+    platformId: number
+  ) => Promise<void>;
+  isDisableLikeButton?: boolean;
 }) {
   return (
-    <Dialog open={expandedCard !== null} onOpenChange={(open) => !open && setExpandedCard(null)}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh]" aria-describedby="expanded-card-content">
+    <Dialog
+      open={expandedCard !== null}
+      onOpenChange={(open) => !open && setExpandedCard(null)}
+    >
+      <DialogContent
+        className="sm:max-w-[600px] max-h-[90vh]"
+        aria-describedby="expanded-card-content"
+      >
         <DialogHeader>
           <DialogTitle>{expandedCard?.name}</DialogTitle>
         </DialogHeader>
@@ -57,7 +77,12 @@ export default function ExpandedCardDialog({
             >
               👍 Like
             </Button>
-            <Button variant="outline" onClick={() => expandedCard && regeneratePlatform(expandedCard.id)}>
+            <Button
+              variant="outline"
+              onClick={() =>
+                expandedCard && regeneratePlatform(expandedCard.id)
+              }
+            >
               <RefreshCw className="mr-2 h-4 w-4" />
               Regenerate
             </Button>
@@ -69,5 +94,5 @@ export default function ExpandedCardDialog({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

@@ -1,7 +1,18 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { ChevronDown, RefreshCw } from "lucide-react"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown, RefreshCw } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 export default function PlatformCard({
@@ -9,13 +20,16 @@ export default function PlatformCard({
   onClick,
   regeneratePlatform,
   handleLikeButtonClick,
-  isDisableLikeButton
+  isDisableLikeButton,
 }: {
-  platform: { id: number; name: string; content: string }
-  onClick: () => void
-  regeneratePlatform: (id: number) => void
-  handleLikeButtonClick: (e: React.MouseEvent, platformId: number) => Promise<void>
-  isDisableLikeButton?: boolean
+  platform: { id: number; name: string; content: string };
+  onClick: () => void;
+  regeneratePlatform: (id: number) => void;
+  handleLikeButtonClick: (
+    e: React.MouseEvent,
+    platformId: number
+  ) => Promise<void>;
+  isDisableLikeButton?: boolean;
 }) {
   return (
     <Card
@@ -56,8 +70,8 @@ export default function PlatformCard({
         <Button
           variant="outline"
           onClick={(e) => {
-            e.stopPropagation()
-            regeneratePlatform(platform.id)
+            e.stopPropagation();
+            regeneratePlatform(platform.id);
           }}
         >
           <RefreshCw className="mr-2 h-4 w-4" />
@@ -65,5 +79,5 @@ export default function PlatformCard({
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }
