@@ -1,29 +1,53 @@
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { ChevronDown, RefreshCw, X } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, RefreshCw, X } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import ReactMarkdown from "react-markdown";
 
 export default function ExpandedCardDialog({
   expandedCard,
   setExpandedCard,
   regeneratePlatform,
+  handleLikeButtonClick,
+  isDisableLikeButton,
 }: {
-  expandedCard: { id: number; name: string; content: string } | null
-  setExpandedCard: (value: null) => void
-  regeneratePlatform: (id: number) => void
+  expandedCard: { id: number; name: string; content: string } | null;
+  setExpandedCard: (value: null) => void;
+  regeneratePlatform: (id: number) => void;
+  handleLikeButtonClick: (
+    e: React.MouseEvent,
+    platformId: number
+  ) => Promise<void>;
+  isDisableLikeButton?: boolean;
 }) {
   return (
-    <Dialog open={expandedCard !== null} onOpenChange={(open) => !open && setExpandedCard(null)}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh]" aria-describedby="expanded-card-content">
+    <Dialog
+      open={expandedCard !== null}
+      onOpenChange={(open) => !open && setExpandedCard(null)}
+    >
+      <DialogContent
+        className="sm:max-w-[600px] max-h-[90vh]"
+        aria-describedby="expanded-card-content"
+      >
         <DialogHeader>
           <DialogTitle>{expandedCard?.name}</DialogTitle>
         </DialogHeader>
         <div className="py-4 overflow-y-auto max-h-[60vh]">
-            <div className="prose dark:prose-invert">
-              <ReactMarkdown>{expandedCard?.content || ""}</ReactMarkdown>
-            </div>
-            
+          <div className="prose dark:prose-invert">
+            <ReactMarkdown>{expandedCard?.content || ""}</ReactMarkdown>
+          </div>
+
           {/* <Textarea
             id="expanded-card-content"
             value={expandedCard?.content ?? ""} // Use empty string as fallback
@@ -46,7 +70,19 @@ export default function ExpandedCardDialog({
             </DropdownMenuContent>
           </DropdownMenu>
           <div className="flex gap-4">
-            <Button variant="outline" onClick={() => expandedCard && regeneratePlatform(expandedCard.id)}>
+            <Button
+              variant="outline"
+              onClick={(e) => handleLikeButtonClick(e, expandedCard?.id || 0)}
+              disabled={isDisableLikeButton}
+            >
+              👍 Like
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() =>
+                expandedCard && regeneratePlatform(expandedCard.id)
+              }
+            >
               <RefreshCw className="mr-2 h-4 w-4" />
               Regenerate
             </Button>
@@ -58,5 +94,5 @@ export default function ExpandedCardDialog({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

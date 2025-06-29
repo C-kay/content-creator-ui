@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,15 +9,15 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuSeparator,
   DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu"
-import { ChevronDown, X, Check } from "lucide-react"
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown, X, Check } from "lucide-react";
 
 interface PlatformSelectorProps {
-  selectedPlatforms: number[]
-  togglePlatform: (platformId: number) => void
-  selectAllPlatforms: () => void
-  clearPlatformSelection: () => void
-  availablePlatforms: Array<{ id: number; name: string }>
+  selectedPlatforms: number[];
+  togglePlatform: (platformId: number) => void;
+  selectAllPlatforms: () => void;
+  clearPlatformSelection: () => void;
+  availablePlatforms: Array<{ id: number; name: string }>;
 }
 
 export default function PlatformSelector({
@@ -27,9 +27,9 @@ export default function PlatformSelector({
   clearPlatformSelection,
   availablePlatforms,
 }: PlatformSelectorProps) {
-  const selectedCount = selectedPlatforms.length
-  const totalPlatforms = availablePlatforms.length
-  const isAllSelected = selectedCount === totalPlatforms
+  const selectedCount = selectedPlatforms.length;
+  const totalPlatforms = availablePlatforms.length;
+  const isAllSelected = selectedCount === totalPlatforms;
 
   return (
     <DropdownMenu>
@@ -66,5 +66,5 @@ export default function PlatformSelector({
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
