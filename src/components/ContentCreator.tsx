@@ -67,7 +67,7 @@ export default function ContentCreator() {
 
   const generateContent = async () => {
     if (!draft.trim() || selectedPlatforms.length === 0) return;
-
+    setIsDisableLikeButton(false);
     setIsGenerating(true);
 
     try {
